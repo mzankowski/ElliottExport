@@ -1,0 +1,13 @@
+Step 1:  create Elliott Marketing SQL database
+
+Step 2:  run stored procedure scripts.  The stored procedures will drop and create all necessary tables for Elliott when executed
+
+Step 3:  Step up SSIS package.  We deploy to the SSIS Catalog on our test SQL server instance (called "Link") in these scripts
+
+Step 4:  Check FTP batch file:  you'll need to set your FTP account name and password here.
+
+Step 5:  Set up SQL job.  We run ours on the 15th of the month.
+
+Notes:  We run a full back up and restore of our production database, restoring the database as "impresario_restore" on our test database server.  The stored procedures included here then query from the restored database.  
+
+In the SSIS job the "Get Data" Execute SQL task contains a comma-separated list of control group IDs.  Adjust as needed.

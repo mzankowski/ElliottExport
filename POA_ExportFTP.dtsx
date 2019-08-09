@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/11/2011 11:03:04 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VIRTUALCENTER"
+  DTS:CreatorName="PHILORCH\ctarbox"
+  DTS:DelayValidation="True"
+  DTS:DTSID="{F9A50FE5-87EC-47EA-9307-81E49C468CE0}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3002.107"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="POA_ExportFTP"
+  DTS:PackageType="5"
+  DTS:VersionBuild="129"
+  DTS:VersionGUID="{C7E11FA6-45FD-469B-A118-58FC3BCB80D2}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[backup]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{B97A20B2-8917-4533-A43E-A83004FFEC69}"
+      DTS:ObjectName="backup">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="E:\ElliottMarketing\Backups\backup.bak" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SQL_Conn]"
+      DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+      DTS:DTSID="{B20985C8-E2B1-4180-8B58-6C6C3FFCC275}"
+      DTS:ObjectName="SQL_Conn">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=link.rpac.org;Initial Catalog=PSS_ElliottMarketing;Integrated Security=True;Application Name=SSIS-POA_ExportFTP-{B20985C8-E2B1-4180-8B58-6C6C3FFCC275}quatro.PSS_ElliottMarketing;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{65ECBC3F-662A-4CA9-A8BE-EB666D5CEFDE}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ForEachLoopFile">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3417B72F-7EF2-416F-9891-28AAC64BBE1D}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;ElliottMarketingPOA_&quot; + RIGHT(&quot;00&quot;+(DT_WSTR,20) DATEPART( &quot;mm&quot;, GETDATE() ),2) + RIGHT(&quot;00&quot;+(DT_WSTR,20) DATEPART( &quot;dd&quot;, GETDATE() ),2) + RIGHT((DT_WSTR,20) DATEPART( &quot;yy&quot;, GETDATE() ),2)"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NewFileName">
+      <DTS:VariableValue
+        DTS:DataType="8">ElliottMarketingPOA_080819</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3AC5DD3C-7E91-4FAB-AEEC-F4B3EC17469F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;E:\\ElliottMarketing\\Backups\\&quot;+  @[User::NewFileName] + &quot;.bak&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NewFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">E:\ElliottMarketing\Backups\ElliottMarketingPOA_080819.bak</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Back up Elliott Db"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{B1AF0D2D-7781-4A9A-A04D-7CAA9643C28E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Back up Elliott Db"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"BACKUP DATABASE PSS_ElliottMarketing TO disk ='" + @[User::NewFilePath]   +  "' with format"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B20985C8-E2B1-4180-8B58-6C6C3FFCC275}"
+          SQLTask:SqlStatementSource="BACKUP DATABASE PSS_ElliottMarketing TO disk ='E:\ElliottMarketing\Backups\ElliottMarketingPOA_080819.bak' with format" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Back up Elliott Db 1"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{0395dbd1-78f9-4b6c-aabc-ee7c6898b15f}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Back up Elliott Db 1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"EXECUTE master.dbo.xp_delete_file 0,N'" + @[User::NewFilePath] + "'"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B20985C8-E2B1-4180-8B58-6C6C3FFCC275}"
+          SQLTask:SqlStatementSource="EXECUTE master.dbo.xp_delete_file 0,N'E:\ElliottMarketing\Backups\ElliottMarketingPOA_080819.bak'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\FTP by BAT"
+      DTS:CreationName="Microsoft.ExecuteProcess"
+      DTS:Description="Execute Process Task"
+      DTS:DTSID="{749969D9-BEF2-461F-AC6D-179A6004F61F}"
+      DTS:ExecutableType="Microsoft.ExecuteProcess"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="FTP by BAT"
+      DTS:TaskContact="Execute Process Task;Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecuteProcessData
+          Executable="E:\ElliottMarketing\FTP\SFTP_Elliott_Marketing_POA.bat" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get Data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{2AEF5BB5-2EC2-4EEC-9F22-5EC647B34961}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get Data"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B20985C8-E2B1-4180-8B58-6C6C3FFCC275}"
+          SQLTask:SqlStatementSource="EXECUTE [PSS_ElliottMarketing].[dbo].[export_to_elliottmarketing] &#xA; '1,3,14,42,41'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Prepare"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{AE5D90BB-A18A-4AC6-B48B-1C4146F3B444}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Prepare"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B20985C8-E2B1-4180-8B58-6C6C3FFCC275}"
+          SQLTask:SqlStatementSource="EXECUTE [PSS_ElliottMarketing].[dbo].[prepare_for_export] " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{B3C78115-6B20-499A-8A2D-B5F10B5D542C}"
+      DTS:From="Package\Prepare"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Get Data" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{3F29EA8F-7EA4-423D-BB0B-D9C0331036D4}"
+      DTS:From="Package\Get Data"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Back up Elliott Db" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{E89DC38C-50A9-41EB-99D4-F19139E11E51}"
+      DTS:From="Package\Back up Elliott Db"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\FTP by BAT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{EEB70DAB-3262-4BD3-9A5C-45648CBAC433}"
+      DTS:From="Package\FTP by BAT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Back up Elliott Db 1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssge="clr-namespace:Microsoft.SqlServer.Graph.Extended;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Back up Elliott Db"
+          TopLeft="124.481132075472,229.405660377358" />
+        <NodeLayout
+          Size="133,42"
+          Id="Package\FTP by BAT"
+          TopLeft="302.669811320755,335.066037735849" />
+        <NodeLayout
+          Size="125,42"
+          Id="Package\Get Data"
+          TopLeft="52.5,120.367924528302" />
+        <NodeLayout
+          Size="115,42"
+          Id="Package\Prepare"
+          TopLeft="5.5,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="63,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="52,72.867924528302"
+              Start="0,0"
+              End="52,65.367924528302">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.433962264151" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32.433962264151"
+                    Point2="0,36.433962264151"
+                    Point3="4,36.433962264151" />
+                  <mssgle:LineSegment
+                    End="48,36.433962264151" />
+                  <mssgle:CubicBezierSegment
+                    Point1="48,36.433962264151"
+                    Point2="52,36.433962264151"
+                    Point3="52,40.433962264151" />
+                  <mssgle:LineSegment
+                    End="52,65.367924528302" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="115,162.367924528302">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="90.4811320754717,67.037735849056"
+              Start="0,0"
+              End="90.4811320754717,59.537735849056">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.518867924528" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.518867924528"
+                    Point2="0,33.518867924528"
+                    Point3="4,33.518867924528" />
+                  <mssgle:LineSegment
+                    End="86.4811320754717,33.518867924528" />
+                  <mssgle:CubicBezierSegment
+                    Point1="86.4811320754717,33.518867924528"
+                    Point2="90.4811320754717,33.518867924528"
+                    Point3="90.4811320754717,37.518867924528" />
+                  <mssgle:LineSegment
+                    End="90.4811320754717,59.537735849056" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="205.481132075472,271.405660377358">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="163.688679245283,63.660377358491"
+              Start="0,0"
+              End="163.688679245283,56.160377358491">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.8301886792455" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.8301886792455"
+                    Point2="0,31.8301886792455"
+                    Point3="4,31.8301886792455" />
+                  <mssgle:LineSegment
+                    End="159.688679245283,31.8301886792455" />
+                  <mssgle:CubicBezierSegment
+                    Point1="159.688679245283,31.8301886792455"
+                    Point2="163.688679245283,31.8301886792455"
+                    Point3="163.688679245283,35.8301886792455" />
+                  <mssgle:LineSegment
+                    End="163.688679245283,56.160377358491" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="note"
+          ParentId="Package"
+          Size="51,37"
+          Id="ab740877-0e70-46ad-80cd-8b94681a8b81"
+          TopLeft="5.5,5.5">
+          <AnnotationLayout.FontInfo>
+            <mssge:FontInfo
+              Color="#FF000000">
+              <mssge:FontInfo.TextDecorations>
+                <av:TextDecorationCollection />
+              </mssge:FontInfo.TextDecorations>
+            </mssge:FontInfo>
+          </AnnotationLayout.FontInfo>
+        </AnnotationLayout>
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Back up Elliott Db 1"
+          TopLeft="451,443" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="369.169811320755,377.066037735849">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="162.830188679245,65.933962264151"
+              Start="0,0"
+              End="162.830188679245,58.433962264151">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.9669811320755" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.9669811320755"
+                    Point2="0,32.9669811320755"
+                    Point3="4,32.9669811320755" />
+                  <mssgle:LineSegment
+                    End="158.830188679245,32.9669811320755" />
+                  <mssgle:CubicBezierSegment
+                    Point1="158.830188679245,32.9669811320755"
+                    Point2="162.830188679245,32.9669811320755"
+                    Point3="162.830188679245,36.9669811320755" />
+                  <mssgle:LineSegment
+                    End="162.830188679245,58.433962264151" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
